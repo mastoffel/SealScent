@@ -1,4 +1,4 @@
-ScentResults <- function(subgroup, type, plotPC, beach = 0) {
+ScentResults <- function(subgroup, type, beach = 0) {
 ## gives a summary of the main results
 ## subgroup = "mums","pups", "all" 
 ## type = "pca", "fa"
@@ -19,17 +19,19 @@ source("resultsHet.R")
 source("multiplot.R")
 source("PCOAScores.R")
 
+
 ## loading data
 
 # already standardized and transformed, transposed abundance matrix
-scent.abundance <- as.data.frame(t(read.csv(".\\csv_files\\scent abundance nobeach.csv",row.names=1))) 
-
+# scent.abundance <- as.data.frame(t(read.csv(".\\csv_files\\scent abundance nobeach.csv",row.names=1))) 
+scent.abundance <- as.data.frame(t(read.csv(".\\csv_files\\scent abundances.csv",row.names=1))) 
+# scent.abundance <- as.data.frame((read.csv(".\\csv_files\\scent.abund.nozero.csv",row.names=1))) 
 # 6 different diversity indices (from primer)
 scent.diversity <- read.csv(".\\csv_files\\scent diversity.csv",row.names=1) 
 
 # relatedness matrix
-relatedness <- read.csv(".\\csv_files\\relatedness_41loci.csv",row.names=1)
-
+# relatedness <- read.csv(".\\csv_files\\relatedness_41loci.csv",row.names=1)
+relatedness <- read.csv(".\\csv_files\\relatednessnew.csv",row.names=1)
 # heterozygosity vector SH
 heterozygosity <- read.csv(".\\csv_files\\heterozygosity_41loci.csv", row.names=1) 
 
@@ -67,14 +69,14 @@ if (beach == 1) {
         abund <- abund[factors$Beach==1, ]
         div <- div[factors$Beach==1, ]
         relate <- relate[factors$Beach==1, factors$Beach==1]
-        het <- het[factors$Beach==1, ]
+        het <- subset(het, factors$Beach==1)
         scores <- scores[factors$Beach==1, ]
         factors <- factors[factors$Beach==1, ]
 } else if (beach == 2) {
         abund <- abund[factors$Beach==2, ]
         div <- div[factors$Beach==2, ]
         relate <- relate[factors$Beach==2, factors$Beach==2]
-        het <- het[factors$Beach==2, ]
+        het <- subset(het, factors$Beach==2)
         scores <- scores[factors$Beach==2, ]
         factors <- factors[factors$Beach==2, ]
 }
@@ -99,8 +101,10 @@ het.df[, 3:(2+NumFactors)] <- scores[, 1:NumFactors]
 # PC vs. Heterozygosity
 results.het <- resultsHet(het.df, NumFactors)
 
-# create pca.scores data.frame with factor beaches
-scores$beach <- factor(factors$Beach,labels=c("beach 1","beach 2")) # bloody hell, this is cool!!!
+# create pca.scores data.frame with factor beaches if all individuals are chosen
+if (beach == 0) {
+        scores$beach <- factor(factors$Beach,labels=c("beach 1","beach 2")) # bloody hell, this is cool!!!
+}
 
 ScentResults <- list(relate.df=relate.df,
                      results.relatedness=results.relatedness,

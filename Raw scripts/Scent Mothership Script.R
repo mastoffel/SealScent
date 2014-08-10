@@ -1,14 +1,10 @@
 ## Main Scripts
 
-setwd("C:/Users/Martin/Studium/MSc.Behaviour/Research/Seal Scent/R code/Raw scripts")
-
-## for heterozygosity AND relatedness
-
 # loading raw data
 scent.abundance <- as.data.frame(t(read.csv(".\\csv_files\\scent abundances.csv",row.names=1))) 
 
 source("ScentResults.R")
-res <- ScentResults("mums","fa",1, beach=0)
+res <- ScentResults("mums","fa", beach=0)
 
 # subset results list output
 relate.df <- res[[1]]
