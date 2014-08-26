@@ -1,5 +1,5 @@
 ## Main Scripts
-
+# 1 = special study beach, 2 = freshwater beach
 # loading raw data
 scent.abundance <- as.data.frame(t(read.csv(".\\csv_files\\scent abundances.csv",row.names=1))) 
 
@@ -19,9 +19,6 @@ factors <- res[[8]]
 # get factor solution
 scent.fa <- factor.pa.ginv(scent.abundance, nfactors = 4, prerotate=T,
                            rotate = "promax", scores = T, m=4)
-
-# get new factor as combination
-het.df$F1F2 <- het.df$F1 + het.df$F2
 
 
 load    <- scent.fa$loadings
