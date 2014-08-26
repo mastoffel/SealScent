@@ -3,6 +3,8 @@
 # laoding functions ------------------------------------------------------------
 source("get_scores.R")
 source("subset_all.R")
+source("get_pairdiff.R")
+source("rel_results.R")
 # loading data------------------------------------------------------------------                                                                                                                                                                                                                                                                                                                               
 
 # abundance matrix (standardized and log(x + 1) - transformed)
@@ -60,12 +62,11 @@ het <- allsubsets[[4]]
 scores <- allsubsets[[5]]
 factors <- allsubsets[[6]]
 
-#
+# compute relatedness + scores data frame
+relate_df <- get_pairdiff(relate, scores, df = F)
 
-load    <- scent.fa$loadings
-sorted.loadings <- load[order(load[, 1],decreasing=TRUE), 1] # change both numbers for PC change
-#sorted.loadings.1 <- load[order(load[, 1]), 1]
-loaddf <- as.data.frame(sorted.loadings)
-myTitle <- "Loadings Plot for PC1" 
-myXlab  <- "Variable Loadings"
-dotplot(sorted.loadings, main=myTitle, xlab=myXlab, cex=1.5, col="red")
+# and list of relatedness-difference matrices
+relate_list <- get_pairdiff(relate, scores, df = T)
+
+# relatedness results
+relate_results <- rel_results(relate, scores, abund, ncol(scores))

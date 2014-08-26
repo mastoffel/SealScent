@@ -10,7 +10,7 @@ get_scores <- function(abundances, method = "fa", num_dim = 4,
                 
         } else if (method == "fa") {
                 scent_ord <- factor.pa.ginv(abundances, nfactors = num_dim, 
-                                            prerotate = F,rotate = rotation, 
+                                            prerotate = T,rotate = rotation, 
                                             scores = T, m = 3)
                 allscores <- as.data.frame(scent_ord$scores)
                 
