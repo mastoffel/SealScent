@@ -1,6 +1,9 @@
 ## 
 # already standardized and transformed, transposed abundance matrix
-scent.abundance <- as.data.frame(t(read.csv(".\\csv_files\\scent abundances.csv",row.names=1))) 
+scent_abundance <- as.data.frame(t(read.csv(paste("C:\\Users\\Martin\\Studium\\",
+                                                  "MSc.Behaviour\\Research\\Seal Scent\\R code\\",
+                                                  "data\\csv_files\\scent abundances.csv", 
+                                                  sep = ""), row.names=1)))
 
 library(HDMD)
 scent.fa <- factor.pa.ginv(scent.abundance[1:41], nfactors = 4, prerotate=T,
@@ -8,29 +11,31 @@ scent.fa <- factor.pa.ginv(scent.abundance[1:41], nfactors = 4, prerotate=T,
 
 load    <- scent.fa$loadings
 loaddf <- as.data.frame(load[, 1:4])
-row.names(loaddf) <- names(scent.abundance)
+row.names(loaddf) <- names(scent_abundance)
 
 # factor: 1 for best results compound (--> relatedness)
 library(dplyr)
 loaddf$best <- 0
 loaddf$beach <- 0
-loaddf[elemnames, 6] <- 1
-loaddf$best[intersect.pa] <- 1
-loaddfsort <- arrange(loaddf, F2)
+
+elemnames <- which(colnames(scent_abundance) %in% all_best[1:20])
+
+
+loaddf$best[elemnames] <- 1
+loaddfsort <- arrange(loaddf, F4)
 
 # adding rank factor for number of occurences
-occ <- apply(scent.abundance, 1, function(x) out <- sum(x > 0))
+occ <- apply(scent_abundance[1:41, ], 1, function(x) out <- sum(x > 0))
 loaddf$occ <- occ
 
 library(ggplot2)
-ggplot(data=loaddfsort, aes(y = 1:213, x = F2)) +
-        geom_point(aes(size = occ, color = as.factor(best))) +
+ggplot(data=loaddfsort, aes(y = 1:213, x = F4)) +
+        geom_point(aes(alpha = as.factor(best))) +
         theme_minimal(base_size=16)
 
 
-
-scent <- as.matrix((scent.abundance))
-importance <-  loadF1 %*%  as.matrix(t(scent.abundance))
+scent <- as.matrix((scent_abundance))
+importance <-  loadF1 %*%  as.matrix(t(scent_abundance))
 
 sorted.loadings <- load[order(load[, 1],decreasing=FALSE), 1] 
 

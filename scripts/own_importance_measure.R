@@ -1,9 +1,9 @@
 ## 
 # already standardized and transformed, transposed abundance matrix
-scent.abundance <- as.data.frame(t(read.csv(".\\csv_files\\scent abundances.csv",row.names=1))) 
+scent_abundance <- as.data.frame(t(read.csv(".\\csv_files\\scent abundances.csv",row.names=1))) 
 
 library(HDMD)
-scent.fa <- factor.pa.ginv(scent.abundance, nfactors = 4, prerotate=T,
+scent.fa <- factor.pa.ginv(scent_abundance, nfactors = 4, prerotate=T,
                            rotate = "promax", scores = T, m=4)
 
 load    <- scent.fa$loadings
