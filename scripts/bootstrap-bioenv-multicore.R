@@ -37,7 +37,7 @@ sfLibrary(dplyr)
 
 bootstrap <- function(iter_comp) { # main resampling function
         
-        for (i in 10) {
+        for (i in 1:100) {
                 
                 index_seals <- sort(sample(1:41, size = 20, replace = F))
                 
@@ -81,12 +81,13 @@ sfExportAll(except = NULL, debug = FALSE)
 sfClusterEval(ls())
 
 # calculations
-vals <- list(1:10, 1:10)
+vals <- list(1:1000, 1:1000)
 best <- sfLapply(vals, bootstrap)
 
 # stop cluster
 sfStop()
 
+# bring all results together and save as txt
 all_best <- unlist(best)
 write(all_best, file = "best.txt", append = TRUE, sep = " ")
 
