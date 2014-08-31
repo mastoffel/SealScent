@@ -2,7 +2,7 @@
 library(vegan)
 source("bio.env.R")
 library(stringr)
-library(dplyr)
+#library(dplyr)
 #source("bv.step.R")
 #source("bioenvmod.R")
 # create empty vector to count elements
@@ -10,7 +10,7 @@ library(dplyr)
 
 all_best <- vector()
 
-for (i in 1:1000) {
+for (i in 1:10) {
         
         index_seals <- sort(sample(1:41, size = 20, replace = F))
         
@@ -18,7 +18,7 @@ for (i in 1:1000) {
         reltemp <- 1-as.dist(relate[index_seals, index_seals])
         abundtemp <- abund[index_seals, ]
         
-        for (i in 1:100) {
+        for (i in 1:10) {
                 
         # sample 10 compounds
                 index_comps <- sort(sample(1:183, size = 10, replace = F))
@@ -44,5 +44,7 @@ for (i in 1:1000) {
                 all_best <- append(all_best, best)
         }
 }
+
+
 
                  
